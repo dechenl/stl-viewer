@@ -4,6 +4,7 @@
 #include <SDL3/SDL_main.h>
 
 #include <format>
+#include <cmath>
 
 #include "geometry.h"
 #include "parser.h"
@@ -272,7 +273,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     0, 0, 1, -zoom,
     0, 0, 0, 1
   };
-  mat4 model = rot.mat4() * mat4{
+  mat4 model = rot.mat() * mat4{
     1,0,0,0,
     0,1,0,0,
     0,0,1,0,
@@ -282,7 +283,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 
   // calc light direction based on rotation
   vec4 light4(light, 1);
-  light4 = rot.inverse().mat4() * light4;
+  light4 = rot.inverse().mat() * light4;
   vec3 rlight = {light4.x, light4.y, light4.z};
 
   // calc pixel

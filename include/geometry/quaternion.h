@@ -15,7 +15,7 @@ struct quaternion
 
   quaternion operator*(const quaternion &) const;
   quaternion operator/(float) const;
-  mat4 mat4() const;
+  mat4 mat() const;
   quaternion inverse() const;
   float mag() const;
 

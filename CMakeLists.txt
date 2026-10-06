@@ -2,15 +2,25 @@ cmake_minimum_required(VERSION 3.24)
 project(stl-viewer)
 
 include(FetchContent)
+if(WIN32)
 FetchContent_Declare(sdl
     URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.14/SDL3-devel-3.4.14-mingw.zip
     URL_HASH SHA256=5f43d6dfadaf13c63c8f52a9f8a31bcfd497faeb569cae9ba6165126d1ebb960
 )
+else()
+FetchContent_Declare(sdl
+    URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.14/SDL3-3.4.14.tar.gz
+    URL_HASH SHA256=30d4aa2b3037718142b32dffd4e72f917ebb6cc5227150e7bb9c45efb2153aeb
+)
+endif()
+
 FetchContent_MakeAvailable(sdl)
 
 set(CMAKE_CXX_STANDARD 20)
 
+if(WIN32)
 include(${sdl_SOURCE_DIR}/cmake/SDL3Config.cmake)
+endif()
 
 add_executable(stl-viewer
     src/main.cc

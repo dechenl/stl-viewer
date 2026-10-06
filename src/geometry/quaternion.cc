@@ -35,7 +35,7 @@ quaternion::operator/(float s) const
 }
 
 mat4
-quaternion::mat4() const
+quaternion::mat() const
 {
   return {
     1 - 2*(y*y + z*z), 2*(x*y - w*z),     2*(x*z + w*y),     0,

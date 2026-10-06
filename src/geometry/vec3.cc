@@ -1,6 +1,7 @@
 #include "geometry/vec3.h"
 
 #include <sstream>
+#include <cmath>
 
 vec3
 vec3::operator+(const vec3 &o) const
