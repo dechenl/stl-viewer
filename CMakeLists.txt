@@ -7,6 +7,7 @@ FetchContent_Declare(sdl
     URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.14/SDL3-devel-3.4.14-mingw.zip
     URL_HASH SHA256=5f43d6dfadaf13c63c8f52a9f8a31bcfd497faeb569cae9ba6165126d1ebb960
 )
+elseif(EMSCRIPTEN)
 else()
 FetchContent_Declare(sdl
     URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.14/SDL3-3.4.14.tar.gz
@@ -14,7 +15,9 @@ FetchContent_Declare(sdl
 )
 endif()
 
+if(NOT EMSCRIPTEN)
 FetchContent_MakeAvailable(sdl)
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -38,6 +41,12 @@ add_executable(stl-viewer
     src/parser.cc
 )
 target_include_directories(stl-viewer PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+if (EMSCRIPTEN)
+set_target_properties(stl-viewer PROPERTIES SUFFIX ".html")
+set_target_properties(stl-viewer PROPERTIES OUTPUT_NAME "index")
+target_compile_options(stl-viewer PRIVATE "-sUSE_SDL=3")
+target_link_options(stl-viewer PRIVATE "-sUSE_SDL=3" "-sALLOW_MEMORY_GROWTH=1")
+else()
 target_link_libraries(stl-viewer SDL3::SDL3)
 
 add_custom_command(TARGET stl-viewer POST_BUILD
@@ -46,3 +55,4 @@ add_custom_command(TARGET stl-viewer POST_BUILD
         $<TARGET_FILE_DIR:stl-viewer>
     COMMENT "Copying SDL3.dll to the executable directory..."
 )
+endif()
